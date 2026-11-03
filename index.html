@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SwapCircle — Trade what you have. Launch your enterprise.</title>
+<meta name="description" content="SwapCircle is a zero-risk business incubator disguised as a swapping community. Swap skills and goods with trusted women in your local Pod.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💃%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --pink: #e84393; --pink-soft: #fd79a8; --ink: #2d3436; --muted: #636e72;
+    --blue: #0984e3; --green: #00b894; --purple: #6c5ce7; --red: #d63031;
+    --cream: #fffaf5; --blush: #fff5f7; --line: #dfe6e9;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, Tahoma, sans-serif; background: var(--cream); color: var(--ink); line-height: 1.6; }
+  img { max-width: 100%; display: block; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 3px solid var(--purple); outline-offset: 2px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* Navigation */
+  nav { background: white; padding: 12px 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+  .logo { font-size: 1.5rem; font-weight: bold; color: var(--pink); text-decoration: none; white-space: nowrap; }
+  .nav-links { display: flex; gap: 6px; list-style: none; align-items: center; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 0.95rem; padding: 8px 12px; border-radius: 20px; }
+  .nav-links a:hover, .nav-links a.active { color: var(--pink); background: var(--blush); }
+  .nav-right { display: flex; align-items: center; gap: 10px; }
+  .member-chip { display: none; background: var(--blush); color: var(--pink); border: 1px solid #ffd3e3; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; white-space: nowrap; }
+  .member-chip.show { display: inline-block; }
+  .nav-btn { background: linear-gradient(135deg, var(--pink), var(--pink-soft)); color: white; border: none; padding: 10px 20px; border-radius: 25px; font-weight: 600; white-space: nowrap; text-decoration: none; display: inline-block; }
+  .menu-toggle { display: none; background: none; border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; font-size: 1.2rem; }
+
+  /* Hero */
+  .hero { background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%); padding: 80px 20px; text-align: center; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); line-height: 1.2; margin: 0 auto 20px; max-width: 800px; }
+  .hero p { font-size: 1.2rem; max-width: 700px; margin: 0 auto 30px; color: var(--muted); }
+  .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .hero-btns button { padding: 12px 22px; border-radius: 25px; border: 2px solid transparent; font-weight: 600; }
+  .btn-primary { background: var(--pink); color: white; }
+  .btn-secondary { background: white; color: var(--pink); border-color: var(--pink) !important; }
+  .btn-primary:hover { background: #d63384; }
+  .btn-secondary:hover { background: var(--blush); }
+  .hero-stats { display: flex; justify-content: center; gap: 36px; flex-wrap: wrap; margin-top: 40px; color: #4a4a4a; font-size: 0.95rem; }
+  .hero-stats strong { display: block; font-size: 1.6rem; color: var(--ink); }
+
+  /* Sections */
+  section { padding: 60px 20px; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  h2 { font-size: 2.2rem; text-align: center; margin-bottom: 15px; line-height: 1.25; }
+  .subtitle { text-align: center; color: var(--muted); max-width: 700px; margin: 0 auto 40px; }
+
+  /* Pillars */
+  .pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+  .pillar { background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+  .pillar-icon { font-size: 3rem; margin-bottom: 15px; }
+  .pillar h3 { color: var(--pink); margin-bottom: 10px; }
+
+  /* Steps */
+  .steps-bg { background: var(--blush); }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+  .step { text-align: center; padding: 20px; }
+  .step-icon { font-size: 2.5rem; margin-bottom: 10px; }
+  .step h3 { color: var(--blue); margin-bottom: 10px; }
+
+  /* Pods */
+  .pod-finder { max-width: 640px; margin: 0 auto 10px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .pod-finder input { flex: 1 1 260px; padding: 13px 16px; border: 2px solid var(--line); border-radius: 25px; background: white; }
+  .pod-finder input:focus { border-color: var(--pink); outline: none; }
+  .pod-finder .btn-primary { padding: 12px 26px; border-radius: 25px; border: none; font-weight: 600; }
+  .pod-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 14px auto 0; max-width: 760px; }
+  .chip { background: white; border: 1px solid var(--line); border-radius: 20px; padding: 6px 14px; font-size: 0.9rem; }
+  .chip:hover { border-color: var(--pink); color: var(--pink); }
+  .chip[aria-pressed="true"] { background: var(--pink); border-color: var(--pink); color: white; }
+  .pod-results { max-width: 900px; margin: 26px auto 0; display: grid; gap: 14px; }
+  .pod-result { background: white; border-left: 5px solid var(--green); border-radius: 12px; padding: 18px 22px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; gap: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .pod-result h4 { color: var(--green); }
+  .pod-result p { color: var(--muted); font-size: 0.92rem; }
+  .pod-result button, .pod-empty button { background: var(--pink); color: white; border: none; border-radius: 20px; padding: 9px 20px; font-weight: 600; }
+  .pod-empty { background: #fff3cd; border-radius: 12px; padding: 18px 22px; text-align: center; }
+  .pod-empty button { margin-top: 10px; }
+  .pods-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 40px; }
+  .pod-card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+  .pod-card h4 { color: var(--green); margin-bottom: 10px; }
+
+  /* Listings */
+  .listings-bg { background: #f1f2f6; }
+  .unlock-box { max-width: 560px; margin: 0 auto 30px; background: white; border-radius: 15px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); text-align: center; }
+  .unlock-box form { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .unlock-box input { flex: 1 1 200px; padding: 12px 14px; border: 2px solid var(--line); border-radius: 25px; text-transform: uppercase; letter-spacing: 1px; text-align: center; }
+  .unlock-box input:focus { border-color: var(--purple); outline: none; }
+  .unlock-box button { background: var(--purple); color: white; border: none; border-radius: 25px; padding: 12px 24px; font-weight: 600; }
+  .hint { font-size: 0.85rem; color: var(--muted); margin-top: 10px; }
+  .hint button { background: none; border: none; color: var(--purple); text-decoration: underline; padding: 0; font-weight: 600; }
+  .field-error { color: var(--red); font-size: 0.88rem; margin-top: 8px; min-height: 1.2em; }
+  .pod-banner { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; background: white; border-radius: 12px; padding: 14px 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .link-btn { background: none; border: none; color: var(--purple); font-weight: 600; text-decoration: underline; }
+  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 20px; }
+  .toolbar .chips { display: flex; gap: 8px; flex-wrap: wrap; flex: 1 1 300px; }
+  .toolbar input[type=search], .toolbar select { padding: 9px 14px; border: 1px solid var(--line); border-radius: 20px; background: white; }
+  .listings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .listing-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+  .listing-card > img, .listing-card .ph { width: 100%; height: 200px; object-fit: cover; }
+  .ph { display: flex; align-items: center; justify-content: center; font-size: 4rem; background: linear-gradient(135deg, #ffeaa7, #fab1a0); }
+  .listing-info { padding: 20px; display: flex; flex-direction: column; flex: 1; }
+  .listing-info h4 { margin-bottom: 4px; }
+  .owner { font-size: 0.85rem; color: var(--muted); margin-bottom: 8px; }
+  .listing-info p { color: var(--muted); font-size: 0.95rem; margin-bottom: 10px; }
+  .listing-info .desc { font-size: 0.9rem; }
+  .tag { display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 3px 10px; border-radius: 12px; background: #e8f8f4; color: #00876c; margin-bottom: 8px; align-self: flex-start; }
+  .tag.item { background: #e8f1fd; color: #0a5fb0; }
+  .savings { color: var(--green); font-weight: bold; }
+  .card-actions { margin-top: auto; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .card-actions .swap-btn { background: var(--pink); color: white; border: none; border-radius: 20px; padding: 8px 18px; font-weight: 600; }
+  .card-actions .swap-btn:disabled { background: #b2bec3; cursor: default; }
+  .lock-overlay { background: rgba(0,0,0,0.6); color: white; padding: 15px; text-align: center; font-size: 0.9rem; }
+  .empty { grid-column: 1 / -1; text-align: center; padding: 40px 20px; background: white; border-radius: 12px; color: var(--muted); }
+
+  /* Wealth Jar */
+  .jar-section { background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%); color: white; text-align: center; }
+  .jar-section h2 { color: white; }
+  .jar-goals { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 10px 0 24px; }
+  .jar-goal { background: rgba(255,255,255,0.2); border: 2px solid transparent; color: white; padding: 10px 20px; border-radius: 25px; }
+  .jar-goal:hover { background: rgba(255,255,255,0.3); }
+  .jar-goal[aria-pressed="true"] { background: white; color: var(--purple); font-weight: 700; }
+  .jar-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; max-width: 760px; margin: 30px auto; }
+  .jar-stat { background: rgba(255,255,255,0.15); padding: 20px; border-radius: 12px; }
+  .jar-stat h3 { font-size: 2rem; margin-bottom: 5px; }
+  .jar-panel { max-width: 760px; margin: 0 auto; display: grid; gap: 20px; text-align: left; }
+  .jar-card { background: rgba(255,255,255,0.14); border-radius: 14px; padding: 20px; }
+  .jar-card h3 { margin-bottom: 12px; font-size: 1.05rem; }
+  .jar-form { display: grid; grid-template-columns: 130px 1fr auto; gap: 10px; }
+  .jar-form input { padding: 11px 14px; border: none; border-radius: 10px; background: white; color: var(--ink); min-width: 0; }
+  .jar-form button { background: #ffeaa7; color: #4a3b00; border: none; border-radius: 10px; padding: 11px 20px; font-weight: 700; }
+  .jar-list { list-style: none; margin-top: 14px; display: grid; gap: 8px; }
+  .jar-list li { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: rgba(255,255,255,0.12); padding: 8px 14px; border-radius: 10px; font-size: 0.93rem; }
+  .jar-list button { background: none; border: none; color: white; opacity: 0.8; text-decoration: underline; font-size: 0.85rem; }
+  .alloc-bar { display: flex; height: 16px; border-radius: 8px; overflow: hidden; background: rgba(255,255,255,0.2); }
+  .alloc-bar span { display: block; height: 100%; transition: width 0.4s; }
+  .alloc-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 0.88rem; }
+  .alloc-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+  .rate-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .rate-row input[type=range] { flex: 1 1 200px; accent-color: #ffeaa7; }
+  .zerodha-hint { background: rgba(255,255,255,0.95); color: var(--purple); padding: 15px; border-radius: 10px; max-width: 600px; margin: 28px auto 20px; font-weight: 600; }
+  .jar-section .reset-jar { background: none; border: none; color: white; text-decoration: underline; opacity: 0.85; margin-top: 8px; }
+
+  /* Premium Ecosystem */
+  .premium-ecosystem { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); padding: 70px 20px; text-align: center; border-top: 4px solid var(--pink); border-bottom: 4px solid var(--pink); }
+  .free-note { background: #d4edda; color: #155724; padding: 12px 20px; border-radius: 8px; max-width: 700px; margin: 0 auto 40px; font-weight: 600; }
+  .premium-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+  .premium-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); text-align: left; transition: transform 0.3s; display: flex; flex-direction: column; }
+  .premium-card:hover { transform: translateY(-5px); }
+  .premium-card h3 { margin-bottom: 12px; font-size: 1.3rem; }
+  .premium-card p { color: var(--muted); margin-bottom: 15px; font-size: 0.95rem; }
+  .premium-foot { margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .revenue-tag { display: inline-block; padding: 5px 12px; border-radius: 15px; font-size: 0.75rem; font-weight: bold; letter-spacing: 0.5px; }
+  .tag-b2b, .tag-b2b2c { background: #ffeaa7; color: #6c5200; }
+  .tag-sub, .tag-aff, .tag-fee { background: var(--line); color: var(--ink); }
+  .notify-btn { background: white; border: 2px solid currentColor; border-radius: 18px; padding: 5px 14px; font-weight: 600; font-size: 0.85rem; }
+  .notify-btn[aria-pressed="true"] { background: #d4edda; color: #155724; border-color: #155724; }
+  .color-pink h3, .color-pink .notify-btn { color: var(--pink); }
+  .color-blue h3, .color-blue .notify-btn { color: var(--blue); }
+  .color-green h3, .color-green .notify-btn { color: var(--green); }
+  .color-purple h3, .color-purple .notify-btn { color: var(--purple); }
+  .color-red h3, .color-red .notify-btn { color: var(--red); }
+  .color-pink .notify-btn[aria-pressed="true"], .color-blue .notify-btn[aria-pressed="true"], .color-green .notify-btn[aria-pressed="true"], .color-purple .notify-btn[aria-pressed="true"], .color-red .notify-btn[aria-pressed="true"] { color: #155724; }
+
+  /* Forms */
+  .form-section { background: white; }
+  .form-container { max-width: 600px; margin: 0 auto; background: var(--blush); padding: 40px; border-radius: 15px; text-align: left; }
+  .upload-area { display: block; border: 2px dashed var(--pink); padding: 30px; text-align: center; border-radius: 10px; background: white; cursor: pointer; margin-bottom: 20px; }
+  .upload-area:hover, .upload-area.drag { background: #fff0f6; }
+  .previews { display: flex; gap: 10px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+  .previews img { width: 76px; height: 76px; object-fit: cover; border-radius: 8px; }
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; margin-bottom: 8px; font-weight: 600; }
+  .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: white; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--pink); outline: none; box-shadow: 0 0 0 3px rgba(232,67,147,0.15); }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .form-group.invalid input, .form-group.invalid select, .form-group.invalid textarea { border-color: var(--red); }
+  .form-group .field-error { margin-top: 6px; }
+  .submit-btn { background: linear-gradient(135deg, var(--pink), var(--pink-soft)); color: white; border: none; padding: 15px 30px; border-radius: 25px; font-size: 1.1rem; font-weight: 600; width: 100%; }
+  .privacy-note { background: #fff3cd; padding: 12px; border-radius: 8px; margin: 15px 0; font-size: 0.9rem; }
+  .welcome { text-align: center; }
+  .welcome .code { display: inline-block; font-size: 2rem; font-weight: 800; letter-spacing: 3px; color: var(--pink); background: white; border: 2px dashed var(--pink); border-radius: 12px; padding: 8px 22px; margin: 14px 0; }
+  .welcome .row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+  .welcome .row button { border-radius: 22px; padding: 10px 22px; font-weight: 600; border: 2px solid var(--pink); background: white; color: var(--pink); }
+  .welcome .row .btn-primary { background: var(--pink); color: white; }
+
+  /* Join */
+  .join-section { background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%); text-align: center; }
+
+  /* Footer */
+  footer { background: var(--ink); color: white; text-align: center; padding: 30px 20px; }
+  footer p { margin: 5px 0; }
+  footer .link-btn { color: #b2bec3; font-size: 0.85rem; margin-top: 10px; }
+
+  /* Dialog + toast */
+  dialog { border: none; border-radius: 16px; padding: 28px; max-width: 460px; width: calc(100% - 40px); margin: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+  dialog::backdrop { background: rgba(45,52,54,0.55); }
+  dialog h3 { margin-bottom: 4px; color: var(--pink); }
+  dialog .form-group { margin: 16px 0; }
+  .dialog-actions { display: flex; gap: 10px; justify-content: flex-end; }
+  .dialog-actions button { border-radius: 22px; padding: 10px 22px; font-weight: 600; border: 2px solid var(--pink); background: white; color: var(--pink); }
+  .dialog-actions .btn-primary { background: var(--pink); color: white; }
+  #toasts { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 300; display: grid; gap: 8px; width: min(92vw, 420px); }
+  .toast { background: var(--ink); color: white; padding: 12px 18px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.25); animation: toast-in 0.25s ease-out; }
+  .toast.ok { border-left: 5px solid var(--green); }
+  .toast.warn { border-left: 5px solid #fdcb6e; }
+  @keyframes toast-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  @media (max-width: 860px) {
+    .menu-toggle { display: inline-block; }
+    .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 10px 20px 16px; box-shadow: 0 8px 16px rgba(0,0,0,0.08); align-items: stretch; }
+    .nav-links.open { display: flex; }
+    nav { padding: 12px 16px; }
+    .nav-btn { padding: 9px 14px; font-size: 0.9rem; }
+  }
+  @media (max-width: 640px) {
+    h2 { font-size: 1.7rem; }
+    .form-container { padding: 24px 18px; }
+    .jar-form { grid-template-columns: 1fr; }
+    .member-chip { display: none !important; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav aria-label="Main">
+  <a class="logo" href="#top">SwapCircle 💃</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#pods">Pods</a></li>
+    <li><a href="#listings">Listings</a></li>
+    <li><a href="#jar">Wealth Jar</a></li>
+    <li><a href="#premium">Premium</a></li>
+    <li><a href="#join">Join</a></li>
+  </ul>
+  <div class="nav-right">
+    <span class="member-chip" id="memberChip"></span>
+    <a class="nav-btn" href="#list">+ List a Skill or Item</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">☰</button>
+  </div>
+</nav>
+
+<main id="top">
+<!-- Hero -->
+<header class="hero">
+  <h1>Trade what you have. Launch your enterprise.</h1>
+  <p>SwapCircle is a zero-risk business incubator disguised as a swapping community. Test your ideas, learn new skills, and build a real-world portfolio with trusted women in your local Pod.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" data-go="pods" data-focus="#podQuery">📍 Find My Local Pod</button>
+    <button class="btn-secondary" data-go="mission">🚀 Our Mission</button>
+    <button class="btn-secondary" data-go="how">💡 Zero-Risk Entrepreneurship</button>
+    <button class="btn-secondary" data-go="pods">🤝 Real Local Trust</button>
+    <button class="btn-secondary" data-go="jar">📈 Skill &amp; Wealth Building</button>
+  </div>
+  <div class="hero-stats" aria-label="Community numbers">
+    <div><strong id="statPods">0</strong>active pods</div>
+    <div><strong id="statMembers">0</strong>women swapping</div>
+    <div><strong id="statSaved">₹0</strong>saved by swapping</div>
+  </div>
+</header>
+
+<!-- Mission Pillars -->
+<section id="mission">
+  <div class="container">
+    <h2>Empowering Women. Building Legacies.</h2>
+    <p class="subtitle">We aren't just another investing app. We are an ecosystem for Indian women and children to achieve true independence through three core pillars.</p>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-icon">💰</div>
+        <h3>Financial Independence</h3>
+        <p>Turn everyday savings into business capital or generational wealth. Track the money you don't spend, and use it to fund your micro-enterprise or your child's future.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">💻</div>
+        <h3>Technological Literacy</h3>
+        <p>Our platform is a safe, guided digital sandbox. From uploading listings to managing digital business tools, we build the tech confidence women need to thrive.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🚀</div>
+        <h3>Grassroots Entrepreneurship</h3>
+        <p>Swap your skills—tutoring, tailoring, design—to build a real-world portfolio, gather client testimonials, and lay the foundation for your own paid business.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section class="steps-bg" id="how">
+  <div class="container">
+    <h2>How the SwapCircle Incubator Works</h2>
+    <p class="subtitle">Small actions, done consistently with your community, create massive generational change.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-icon">🔄</div>
+        <h3>1. Swap &amp; Test</h3>
+        <p>Trade your skills or goods within your trusted local Pod. Test your business idea and get real-world feedback without spending a single rupee.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">🧠</div>
+        <h3>2. Learn &amp; Build</h3>
+        <p>Meet face-to-face with community mentors. Learn how to price your services, use social media, or manage finances from women who have done it.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">📈</div>
+        <h3>3. Launch &amp; Grow</h3>
+        <p>Turn your swapped skills into a paid micro-business. Use your saved capital to buy inventory, or invest it for long-term family wealth.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Local Pods -->
+<section id="pods">
+  <div class="container">
+    <h2>Find Your Local SwapCircle Pod</h2>
+    <p class="subtitle">In the era of social media, we bring it back to the real world. Build trust, share wisdom, and grow together.</p>
+
+    <form class="pod-finder" id="podForm" role="search">
+      <label class="sr-only" for="podQuery">City or locality</label>
+      <input id="podQuery" type="search" placeholder="Your city or locality, e.g. Pune, Kothrud" autocomplete="off">
+      <button class="btn-primary" type="submit">Search pods</button>
+    </form>
+    <div class="pod-chips" id="podChips" aria-label="Active pods"></div>
+    <div class="pod-results" id="podResults" aria-live="polite"></div>
+
+    <div class="pods-grid">
+      <div class="pod-card">
+        <h4>📍 Hyper-Local Chapters</h4>
+        <p>Join a pod in your specific neighborhood. Meet the women you are swapping and building businesses with.</p>
+      </div>
+      <div class="pod-card">
+        <h4>☕ Real-World Meetups</h4>
+        <p>Get together up to 3 times a week for casual swap-and-sip mornings, walking groups, or skill-sharing coffees.</p>
+      </div>
+      <div class="pod-card">
+        <h4>🦉 Business Mentors</h4>
+        <p>Learn from experienced "Frontier Builders" in your pod. Get real, localized advice on starting and scaling.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Listings -->
+<section class="listings-bg" id="listings">
+  <div class="container">
+    <h2>👗 Browse Local Pod Listings</h2>
+    <p class="subtitle">Listings are strictly private. Enter your local Pod's Circle Code to see what women in your neighborhood are swapping today.</p>
+
+    <div id="unlockBox" class="unlock-box">
+      <strong>🔒 Enter your Circle Code</strong>
+      <form id="unlockForm" novalidate>
+        <label class="sr-only" for="codeInput">Circle Code</label>
+        <input id="codeInput" placeholder="e.g. KOTH-2026" autocomplete="off" maxlength="12">
+        <button type="submit">Unlock listings</button>
+      </form>
+      <p class="field-error" id="codeError" role="alert"></p>
+      <p class="hint">No code yet? <a href="#join" class="link-btn">Join your Pod</a> to get one. Just looking around? <button type="button" id="demoCode">Try the demo code KOTH-2026</button>.</p>
+    </div>
+
+    <div id="listingsLive" hidden>
+      <div class="pod-banner">
+        <div id="podBannerText"></div>
+        <button class="link-btn" id="leavePod" type="button">Switch pod</button>
+      </div>
+      <div class="toolbar">
+        <div class="chips" id="catChips" role="group" aria-label="Filter by category"></div>
+        <label class="sr-only" for="listingSearch">Search listings</label>
+        <input type="search" id="listingSearch" placeholder="Search listings…">
+        <label class="sr-only" for="listingSort">Sort listings</label>
+        <select id="listingSort">
+          <option value="new">Newest first</option>
+          <option value="save">Biggest savings</option>
+        </select>
+      </div>
+    </div>
+    <div class="listings-grid" id="listingsGrid"></div>
+  </div>
+</section>
+
+<!-- Wealth Jar -->
+<section class="jar-section" id="jar">
+  <div class="container">
+    <h2>💰 Your Business &amp; Wealth Builder Jar</h2>
+    <p class="subtitle" style="color: rgba(255,255,255,0.9);">Every swap is capital saved. Give every saved rupee a specific job to grow your business or secure your family's future.</p>
+
+    <div class="jar-goals" role="group" aria-label="Choose a goal for your next saving" id="jarGoals"></div>
+
+    <div class="jar-stats">
+      <div class="jar-stat"><h3 id="jarTotal">₹0</h3><p>Total Capital Saved</p></div>
+      <div class="jar-stat"><h3 id="jarAvg">₹0</h3><p>Avg. Monthly</p></div>
+      <div class="jar-stat"><h3 id="jarProj">₹0</h3><p>Projected in 10 yrs*</p></div>
+    </div>
+
+    <div class="jar-panel">
+      <div class="jar-card">
+        <h3>Add what a swap saved you</h3>
+        <form class="jar-form" id="jarForm" novalidate>
+          <label class="sr-only" for="jarAmount">Amount saved in rupees</label>
+          <input id="jarAmount" type="number" min="1" step="1" placeholder="₹ amount">
+          <label class="sr-only" for="jarNote">What did you swap?</label>
+          <input id="jarNote" type="text" maxlength="60" placeholder="What did you swap instead of buying?">
+          <button type="submit">Add to Jar</button>
+        </form>
+        <p class="field-error" id="jarError" role="alert" style="color:#ffeaa7"></p>
+        <ul class="jar-list" id="jarList"></ul>
+      </div>
+
+      <div class="jar-card" id="allocCard" hidden>
+        <h3>Where your savings are working</h3>
+        <div class="alloc-bar" id="allocBar" role="img" aria-label="Savings split by goal"></div>
+        <div class="alloc-legend" id="allocLegend"></div>
+      </div>
+
+      <div class="jar-card">
+        <h3>See how it could grow</h3>
+        <div class="rate-row">
+          <label for="jarRate">Assumed yearly growth: <strong id="jarRateLabel">10%</strong></label>
+          <input id="jarRate" type="range" min="4" max="15" step="0.5" value="10">
+        </div>
+      </div>
+    </div>
+
+    <div class="zerodha-hint">
+      📈 <strong>New:</strong> Auto-grow your Jar with Zerodha. Set up micro-SIPs, Index Funds, or Gold ETFs — your saved capital works while you sleep.
+    </div>
+    <p style="font-size: 0.85rem; opacity: 0.85; max-width: 640px; margin: 0 auto;">*Illustrative projection that assumes you keep saving your monthly average at the growth rate you pick. Markets go up and down, and returns are not guaranteed. Use your savings to buy business inventory, upskill, or invest in index funds for long-term wealth.</p>
+    <button class="reset-jar" id="resetJar" type="button">Clear my Jar</button>
+  </div>
+</section>
+
+<!-- Premium Ecosystem -->
+<section class="premium-ecosystem" id="premium">
+  <div class="container">
+    <h2>🌟 The Premium Ecosystem</h2>
+    <p class="subtitle">Optional upgrades to help you scale, protect, and automate — when you're ready.</p>
+
+    <div class="free-note">
+      ✅ Core swapping, Pod access, and community features are <strong>free forever</strong>. Premium tools are 100% optional.
+    </div>
+
+    <div class="premium-grid">
+      <div class="premium-card color-pink">
+        <h3>📈 Zerodha Wealth Engine</h3>
+        <p>Don't just save your swapped capital—grow it. Automatically route your savings into micro-SIPs, Index Funds, or Gold ETFs via our secure Zerodha integration.</p>
+        <div class="premium-foot"><span class="revenue-tag tag-b2b">B2B PARTNER REVENUE</span><button class="notify-btn" data-interest="wealth" aria-pressed="false">Keep me posted</button></div>
+      </div>
+      <div class="premium-card color-blue">
+        <h3>🧠 Future Innovator Premium</h3>
+        <p>A paid upgrade for parents. Unlock advanced entrepreneurship modules for your kids, verified impact badges, and matchmaking with national startup mentors.</p>
+        <div class="premium-foot"><span class="revenue-tag tag-sub">PREMIUM SUBSCRIPTION</span><button class="notify-btn" data-interest="innovator" aria-pressed="false">Keep me posted</button></div>
+      </div>
+      <div class="premium-card color-green">
+        <h3>🛵 Hyper-Local Delivery</h3>
+        <p>Swapping a heavy item or bulk inventory? Integrate Dunzo, Porter, or local runners directly from the chat. We take a tiny affiliate cut from the checkout.</p>
+        <div class="premium-foot"><span class="revenue-tag tag-aff">AFFILIATE COMMISSION</span><button class="notify-btn" data-interest="delivery" aria-pressed="false">Keep me posted</button></div>
+      </div>
+      <div class="premium-card color-purple">
+        <h3>🛡️ Verified Swap Shield</h3>
+        <p>Trading high-value items like laptops or electronics? Pay a micro-fee (₹20-₹50) to unlock our Escrow Contract, guaranteeing item condition and safe handover.</p>
+        <div class="premium-foot"><span class="revenue-tag tag-fee">MICRO-CONVENIENCE FEE</span><button class="notify-btn" data-interest="shield" aria-pressed="false">Keep me posted</button></div>
+      </div>
+      <div class="premium-card color-red">
+        <h3>👑 Become a "Digital Didi"</h3>
+        <p>Trained rural micro-entrepreneurs can franchise our toolkit. Get advanced admin dashboards, data tracking, and physical community chapter kits to lead your region.</p>
+        <div class="premium-foot"><span class="revenue-tag tag-b2b2c">B2B2C FRANCHISE FEE</span><button class="notify-btn" data-interest="didi" aria-pressed="false">Keep me posted</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- List Form -->
+<section class="form-section" id="list">
+  <div class="container">
+    <h2>📸 List your Skill or Item</h2>
+    <p class="subtitle">Upload clear photos to build trust. Test your business idea or trade what you have.</p>
+
+    <form class="form-container" id="listForm" novalidate>
+      <label class="upload-area" id="uploadArea" for="photoInput" tabindex="0">
+        <p>📷 Click or drop images here</p>
+        <p style="font-size: 0.9rem; color: var(--muted); margin-top: 8px;">(Show your product, or photos of your past work! Up to 3 images, 5 MB each.)</p>
+        <div class="previews" id="previews"></div>
+      </label>
+      <input type="file" id="photoInput" accept="image/*" multiple class="sr-only">
+
+      <div class="form-group">
+        <label for="lTitle">Name your listing</label>
+        <input id="lTitle" type="text" maxlength="60" placeholder="e.g., Custom birthday cakes">
+        <p class="field-error"></p>
+      </div>
+      <div class="form-group">
+        <label for="lCat">What are you offering?</label>
+        <select id="lCat">
+          <option value="">Category</option>
+          <option>Skills &amp; Services</option>
+          <option>Clothes &amp; Accessories</option>
+          <option>Books &amp; Media</option>
+          <option>Home &amp; Kitchen</option>
+        </select>
+        <p class="field-error"></p>
+      </div>
+      <div class="form-group">
+        <label for="lDesc">Description &amp; How it helps</label>
+        <textarea id="lDesc" maxlength="300" placeholder="Tell your story..."></textarea>
+        <p class="field-error"></p>
+      </div>
+      <div class="form-group">
+        <label for="lWant">What do you want in return?</label>
+        <input id="lWant" type="text" maxlength="80" placeholder="e.g., Logo design, Math tutoring...">
+        <p class="field-error"></p>
+      </div>
+      <div class="form-group">
+        <label for="lPrice">Its rough market price (₹) — optional</label>
+        <input id="lPrice" type="number" min="0" step="1" placeholder="₹">
+        <p class="field-error"></p>
+      </div>
+
+      <div class="privacy-note">
+        🔒 <strong>Visible only in your Circle</strong> — Only women verified in this specific local Pod can see this listing.
+      </div>
+      <button class="submit-btn" type="submit">Publish to my Pod 🚀</button>
+      <p class="field-error" id="listError" role="alert" style="text-align:center;margin-top:10px"></p>
+    </form>
+  </div>
+</section>
+
+<!-- Join -->
+<section class="join-section" id="join">
+  <div class="container">
+    <h2>Join SwapCircle 💃</h2>
+    <p class="subtitle">Free forever, women-first. Get your local Circle Code upon joining.</p>
+
+    <div class="form-container" id="joinBox">
+      <form id="joinForm" novalidate>
+        <div class="form-group">
+          <label for="jName">Your name</label>
+          <input id="jName" type="text" placeholder="Full name" autocomplete="name">
+          <p class="field-error"></p>
+        </div>
+        <div class="form-group">
+          <label for="jPlace">City &amp; Locality (to assign your Pod)</label>
+          <input id="jPlace" type="text" placeholder="e.g., Pune, Kothrud" autocomplete="off">
+          <p class="field-error"></p>
+        </div>
+        <div class="form-group">
+          <label for="jPhone">WhatsApp number (with country code)</label>
+          <input id="jPhone" type="tel" placeholder="+91..." autocomplete="tel">
+          <p class="field-error"></p>
+        </div>
+        <button class="submit-btn" type="submit">Get my Circle Code 🚀</button>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <p><strong>SwapCircle 💃</strong> · Trade what you have. Launch your enterprise.</p>
+  <p>Free forever · Private Local Circles · Empowering Women &amp; Children</p>
+  <button class="link-btn" id="resetAll" type="button">Reset demo data</button>
+</footer>
+
+<!-- Swap request dialog -->
+<dialog id="swapDialog" aria-labelledby="swapTitle">
+  <form method="dialog" id="swapForm">
+    <h3 id="swapTitle">Propose a swap</h3>
+    <p id="swapSub" class="owner"></p>
+    <div class="form-group">
+      <label for="swapOffer">What will you offer?</label>
+      <input id="swapOffer" type="text" maxlength="80" placeholder="e.g., Instagram page setup">
+      <p class="field-error" id="swapErr"></p>
+    </div>
+    <div class="form-group">
+      <label for="swapNote">Add a note (optional)</label>
+      <textarea id="swapNote" maxlength="200" placeholder="Say hello and suggest when to meet."></textarea>
+    </div>
+    <div class="dialog-actions">
+      <button type="button" id="swapCancel">Cancel</button>
+      <button type="submit" class="btn-primary">Send request</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toasts" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- helpers ---------- */
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const inr = n => '₹' + Math.round(n).toLocaleString('en-IN');
+  const inrShort = n => n >= 1e7 ? '₹' + (n / 1e7).toFixed(2) + ' Cr' : n >= 1e5 ? '₹' + (n / 1e5).toFixed(2) + ' L' : inr(n);
+  const uid = () => Math.random().toString(36).slice(2, 9);
+  const cap = s => s.trim().replace(/\s+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* localStorage when available, in-memory otherwise */
+  const store = (() => {
+    try { localStorage.setItem('__t', '1'); localStorage.removeItem('__t'); return localStorage; }
+    catch (e) { const m = {}; return { getItem: k => (k in m ? m[k] : null), setItem: (k, v) => { m[k] = v; }, removeItem: k => { delete m[k]; } }; }
+  })();
+
+  function toast(msg, kind) {
+    const t = document.createElement('div');
+    t.className = 'toast ' + (kind || 'ok');
+    t.textContent = msg;
+    $('#toasts').appendChild(t);
+    setTimeout(() => t.remove(), 4200);
+  }
+
+  function goTo(id, focusSel) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    if (focusSel) setTimeout(() => { const f = $(focusSel); if (f) f.focus({ preventScroll: true }); }, reduceMotion ? 0 : 450);
+  }
+
+  /* ---------- demo data ---------- */
+  const PODS = [
+    { code: 'KOTH-2026', name: 'Kothrud Circle', city: 'Pune', locality: 'Kothrud', members: 48, meetups: 'Tue · Thu · Sat mornings' },
+    { code: 'BAND-2026', name: 'Bandra Circle', city: 'Mumbai', locality: 'Bandra', members: 62, meetups: 'Mon · Wed · Fri evenings' },
+    { code: 'INDI-2026', name: 'Indiranagar Circle', city: 'Bengaluru', locality: 'Indiranagar', members: 55, meetups: 'Tue · Sat mornings' },
+    { code: 'SAKE-2026', name: 'Saket Circle', city: 'Delhi', locality: 'Saket', members: 37, meetups: 'Wed · Sun mornings' },
+    { code: 'BANJ-2026', name: 'Banjara Hills Circle', city: 'Hyderabad', locality: 'Banjara Hills', members: 41, meetups: 'Thu · Sat afternoons' }
+  ];
+  const ALIASES = { bangalore: 'bengaluru', bombay: 'mumbai', poona: 'pune', hyd: 'hyderabad' };
+  const CATS = ['Skills & Services', 'Clothes & Accessories', 'Books & Media', 'Home & Kitchen'];
+  const IMG = {
+    cake: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop',
+    books: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=300&fit=crop',
+    tailor: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop'
+  };
+  const L = (pod, title, cat, owner, wants, price, desc, emoji, img) => ({ id: pod + '-' + title.slice(0, 6), pod, title, cat, owner, wants, price, desc, emoji, img: img || '', seed: true });
+  const SEED = [
+    L('KOTH-2026', 'Custom Birthday Cakes', 'Skills & Services', 'Meera', 'Logo design for my new bakery', 2500, 'Eggless and vegan cakes, baked to order for up to 20 guests.', '🎂', IMG.cake),
+    L('KOTH-2026', 'Class 10 CBSE Math Books', 'Books & Media', 'Anjali', 'Class 11 Science books or tutoring', 1200, 'Full set with solved papers. Light pencil marks only.', '📚', IMG.books),
+    L('KOTH-2026', 'Alterations & Tailoring', 'Skills & Services', 'Sunita', 'Help setting up an Instagram page', 800, 'Blouse fitting, hemming and kurta alterations. 20 years of experience.', '🧵', IMG.tailor),
+    L('KOTH-2026', 'Mehendi Design Session', 'Skills & Services', 'Pooja', 'Photos of my work for a portfolio', 3000, 'Bridal and festival mehendi, home visits within Kothrud.', '🌿'),
+    L('KOTH-2026', 'Kids Storybook Bundle', 'Books & Media', 'Rashmi', 'Board games or puzzles', 900, 'Twelve picture books for ages 3 to 7 in Marathi and English.', '📖'),
+    L('KOTH-2026', 'Pressure Cooker (5 L)', 'Home & Kitchen', 'Kavita', 'Steel tiffin boxes', 1500, 'Barely used, comes with the original gasket and a spare.', '🍲'),
+    L('BAND-2026', 'Brand Photography Mini-Shoot', 'Skills & Services', 'Zoya', 'Website copywriting', 4000, 'One hour, ten edited photos for your small business page.', '📸'),
+    L('BAND-2026', 'Silk Dupattas (set of 3)', 'Clothes & Accessories', 'Farah', 'Handmade candles', 2200, 'Hand-dyed silk in good condition.', '🧣'),
+    L('BAND-2026', 'Guitar Lessons for Beginners', 'Skills & Services', 'Nisha', 'Meal-prep help for a week', 2000, 'Four weekly sessions, any age.', '🎸'),
+    L('INDI-2026', 'Excel and Bookkeeping Help', 'Skills & Services', 'Lakshmi', 'Packaging design for my pickles', 3500, 'Set up simple books for a home business.', '📊'),
+    L('INDI-2026', 'Cotton Sarees (5)', 'Clothes & Accessories', 'Divya', 'Sewing lessons', 3000, 'Handloom cotton, washed and ready to wear.', '🥻'),
+    L('INDI-2026', 'Air Fryer', 'Home & Kitchen', 'Shalini', 'A standing mixer', 3500, 'Two years old, works perfectly.', '🍟'),
+    L('SAKE-2026', 'Spoken English Coaching', 'Skills & Services', 'Ritu', 'A video intro for my coaching page', 3000, 'Confidence-building sessions for job interviews.', '🗣️'),
+    L('SAKE-2026', 'Handmade Jute Bags', 'Clothes & Accessories', 'Geeta', 'Help with a WhatsApp catalogue', 1000, 'Sturdy, washable, made locally.', '👜'),
+    L('SAKE-2026', 'NCERT Class 8 Set', 'Books & Media', 'Preeti', 'Class 9 books', 800, 'All subjects, neatly kept.', '📘'),
+    L('BANJ-2026', 'Henna and Nail Art', 'Skills & Services', 'Sana', 'Logo for my studio', 2500, 'Festival-ready designs, at home or in studio.', '💅'),
+    L('BANJ-2026', 'Baby Clothes (0–12 months)', 'Clothes & Accessories', 'Aisha', 'Toys for toddlers', 1800, 'Bundle of 25 pieces, washed and sorted by size.', '👶'),
+    L('BANJ-2026', 'Stand Mixer', 'Home & Kitchen', 'Rohini', 'Baking tin set', 4000, 'Works like new, includes three attachments.', '🥣')
+  ];
+  const TEASERS = [
+    { img: IMG.cake, alt: 'Cake', title: 'Custom Birthday Cakes (Skill)', want: 'Logo design for my new bakery', save: 2500 },
+    { img: IMG.books, alt: 'Books', title: 'Class 10 CBSE Math Books', want: 'Class 11 Science books or tutoring', save: 1200 },
+    { img: IMG.tailor, alt: 'Tailoring', title: 'Alterations & Tailoring (Skill)', want: 'Help setting up an Instagram page', save: 800 }
+  ];
+  const GOALS = {
+    business: { label: '🚀 Fund My Business', color: '#ffeaa7' },
+    education: { label: '🎓 Child\'s Education', color: '#55efc4' },
+    retirement: { label: '🏖️ Retirement', color: '#74b9ff' },
+    emergency: { label: '🚨 Emergency Buffer', color: '#ff7675' }
+  };
+
+  /* ---------- state ---------- */
+  const KEY = 'swapcircle.v1';
+  const fresh = () => ({ member: null, pod: null, customPods: [], listings: [], requests: {}, interest: {}, jar: { goal: 'business', entries: [], rate: 10 }, filter: { cat: 'All', q: '', sort: 'new' } });
+  let state = fresh();
+  try { Object.assign(state, JSON.parse(store.getItem(KEY) || '{}')); } catch (e) { /* ignore corrupt data */ }
+  state.filter = { cat: 'All', q: '', sort: 'new' };
+  function save() {
+    const copy = Object.assign({}, state, { listings: state.listings.map(l => Object.assign({}, l, { img: l.img && l.img.indexOf('data:') === 0 ? '' : l.img })) });
+    try { store.setItem(KEY, JSON.stringify(copy)); } catch (e) { /* storage full or blocked */ }
+  }
+
+  const allPods = () => PODS.concat(state.customPods);
+  const getPod = code => {
+    const p = allPods().find(x => x.code === code);
+    if (!p) return null;
+    const joined = state.member && state.member.podCode === code && !p.custom;
+    return Object.assign({}, p, { members: p.members + (joined ? 1 : 0) });
+  };
+
+  /* ---------- navigation ---------- */
+  $('#menuToggle').addEventListener('click', e => {
+    const open = $('#navLinks').classList.toggle('open');
+    e.currentTarget.setAttribute('aria-expanded', open);
+  });
+  $('#navLinks').addEventListener('click', e => { if (e.target.closest('a')) { $('#navLinks').classList.remove('open'); $('#menuToggle').setAttribute('aria-expanded', 'false'); } });
+  $$('[data-go]').forEach(b => b.addEventListener('click', () => goTo(b.dataset.go, b.dataset.focus)));
+
+  const sectionLinks = $$('#navLinks a');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) sectionLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id));
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  sectionLinks.forEach(a => { const s = document.querySelector(a.getAttribute('href')); if (s) io.observe(s); });
+
+  function renderChip() {
+    const chip = $('#memberChip');
+    const pod = state.pod && getPod(state.pod);
+    if (pod) { chip.textContent = (state.member ? 'Hi, ' + state.member.name.split(' ')[0] + ' · ' : '') + pod.code; chip.classList.add('show'); }
+    else chip.classList.remove('show');
+  }
+
+  /* ---------- hero stats ---------- */
+  function countUp(el, to, fmt) {
+    if (reduceMotion) { el.textContent = fmt(to); return; }
+    const t0 = performance.now(), dur = 1200;
+    (function tick(t) {
+      const p = Math.min(1, (t - t0) / dur);
+      el.textContent = fmt(to * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+  }
+  function renderStats() {
+    const pods = allPods();
+    const members = pods.reduce((s, p) => s + getPod(p.code).members, 0);
+    const saved = SEED.reduce((s, l) => s + l.price, 0) * 14 + state.listings.reduce((s, l) => s + (l.price || 0), 0);
+    countUp($('#statPods'), pods.length, n => Math.round(n));
+    countUp($('#statMembers'), members, n => Math.round(n));
+    countUp($('#statSaved'), saved, inrShort);
+  }
+
+  /* ---------- pods ---------- */
+  function tokens(q) {
+    return q.toLowerCase().split(/[^a-z]+/).filter(t => t.length >= 3).map(t => ALIASES[t] || t);
+  }
+  function findPods(q) {
+    const toks = tokens(q);
+    const exact = [], city = [];
+    allPods().forEach(p => {
+      const loc = p.locality.toLowerCase(), cty = p.city.toLowerCase();
+      const locHit = toks.some(t => loc.indexOf(t) === 0 || t.indexOf(loc) === 0 || loc.split(' ').some(w => w === t));
+      const cityHit = toks.some(t => cty.indexOf(t) === 0 || t.indexOf(cty) === 0);
+      if (locHit) exact.push(p); else if (cityHit) city.push(p);
+    });
+    return { exact, city };
+  }
+  function renderPodChips() {
+    $('#podChips').innerHTML = allPods().map(p => `<button type="button" class="chip" data-pod="${esc(p.code)}">${esc(p.locality)}, ${esc(p.city)}</button>`).join('');
+  }
+  function podResultHtml(p) {
+    const pod = getPod(p.code);
+    return `<div class="pod-result"><div><h4>📍 ${esc(pod.name)} · ${esc(pod.city)}</h4><p>${pod.members} members · Meetups: ${esc(pod.meetups)}</p></div><button type="button" data-join-pod="${esc(pod.code)}">Join this Pod</button></div>`;
+  }
+  function showPodResults(q) {
+    const box = $('#podResults');
+    if (!q.trim()) { box.innerHTML = ''; return; }
+    const { exact, city } = findPods(q);
+    const list = exact.concat(city);
+    if (list.length) {
+      const head = exact.length ? '' : `<p class="hint" style="text-align:center">No Pod in that exact locality yet. Here are the Pods in your city.</p>`;
+      box.innerHTML = head + list.map(podResultHtml).join('');
+    } else {
+      box.innerHTML = `<div class="pod-empty"><strong>No Pod in “${esc(q.trim())}” yet.</strong><p>Join and you'll be its founding member. Invite your neighbours to get it going.</p><button type="button" data-join-place="${esc(q.trim())}">Start a Pod here</button></div>`;
+    }
+  }
+  $('#podForm').addEventListener('submit', e => { e.preventDefault(); showPodResults($('#podQuery').value); });
+  $('#podChips').addEventListener('click', e => {
+    const b = e.target.closest('[data-pod]'); if (!b) return;
+    const p = allPods().find(x => x.code === b.dataset.pod);
+    $$('#podChips .chip').forEach(c => c.setAttribute('aria-pressed', c === b));
+    $('#podQuery').value = p.locality + ', ' + p.city;
+    $('#podResults').innerHTML = podResultHtml(p);
+  });
+  $('#podResults').addEventListener('click', e => {
+    const j = e.target.closest('[data-join-pod]'), n = e.target.closest('[data-join-place]');
+    if (j) { const p = allPods().find(x => x.code === j.dataset.joinPod); $('#jPlace').value = p.city + ', ' + p.locality; }
+    else if (n) $('#jPlace').value = n.dataset.joinPlace;
+    else return;
+    goTo('join', '#jName');
+  });
+
+  /* ---------- listings ---------- */
+  function visibleListings() {
+    const mine = state.listings.filter(l => l.pod === state.pod);
+    const seed = SEED.filter(l => l.pod === state.pod);
+    let list = mine.concat(seed);
+    const f = state.filter;
+    if (f.cat !== 'All') list = list.filter(l => l.cat === f.cat);
+    if (f.q.trim()) {
+      const q = f.q.toLowerCase();
+      list = list.filter(l => (l.title + ' ' + l.wants + ' ' + l.desc + ' ' + l.owner).toLowerCase().indexOf(q) > -1);
+    }
+    if (f.sort === 'save') list = list.slice().sort((a, b) => (b.price || 0) - (a.price || 0));
+    return list;
+  }
+  function cardHtml(l) {
+    const mine = !l.seed;
+    const visual = l.img ? `<img src="${esc(l.img)}" alt="${esc(l.title)}" loading="lazy" data-emoji="${esc(l.emoji || '🎁')}">` : `<div class="ph" aria-hidden="true">${esc(l.emoji || '🎁')}</div>`;
+    const sent = state.requests[l.id];
+    const action = mine
+      ? `<button class="link-btn" data-remove="${esc(l.id)}" type="button">Remove my listing</button>`
+      : `<button class="swap-btn" data-swap="${esc(l.id)}" type="button" ${sent ? 'disabled' : ''}>${sent ? '✓ Request sent' : 'Propose a swap'}</button>`;
+    const save = l.price ? `<p class="savings">You save ${inr(l.price)}</p>` : `<p class="savings">Fair swap, no cash needed</p>`;
+    return `<article class="listing-card">${visual}<div class="listing-info">
+      <span class="tag ${l.cat === 'Skills & Services' ? '' : 'item'}">${l.cat === 'Skills & Services' ? 'Skill' : 'Item'} · ${esc(l.cat)}</span>
+      <h4>${esc(l.title)}</h4>
+      <div class="owner">${mine ? 'Listed by you' : 'by ' + esc(l.owner)}</div>
+      ${l.desc ? `<p class="desc">${esc(l.desc)}</p>` : ''}
+      <p>Looking for: ${esc(l.wants)}</p>${save}
+      <div class="card-actions">${action}</div></div></article>`;
+  }
+  function renderListings() {
+    const grid = $('#listingsGrid');
+    const unlocked = !!(state.pod && getPod(state.pod));
+    $('#unlockBox').hidden = unlocked;
+    $('#listingsLive').hidden = !unlocked;
+    if (!unlocked) {
+      grid.innerHTML = TEASERS.map(t => `<article class="listing-card"><div class="lock-overlay">🔒 Unlock</div>
+        <img src="${t.img}" alt="${esc(t.alt)}" loading="lazy" data-emoji="🎁">
+        <div class="listing-info"><h4>${esc(t.title)}</h4><p>Looking for: ${esc(t.want)}</p><p class="savings">You save ${inr(t.save)}</p></div></article>`).join('');
+      return;
+    }
+    const pod = getPod(state.pod);
+    $('#podBannerText').innerHTML = `<strong>${esc(pod.name)}</strong> · ${esc(pod.city)} · ${pod.members} member${pod.members === 1 ? '' : 's'}`;
+    const cats = ['All'].concat(CATS);
+    $('#catChips').innerHTML = cats.map(c => `<button type="button" class="chip" data-cat="${esc(c)}" aria-pressed="${state.filter.cat === c}">${esc(c)}</button>`).join('');
+    const list = visibleListings();
+    if (list.length) grid.innerHTML = list.map(cardHtml).join('');
+    else {
+      const none = !state.listings.some(l => l.pod === state.pod) && !SEED.some(l => l.pod === state.pod);
+      grid.innerHTML = `<div class="empty">${none ? '<strong>Your Pod has no listings yet.</strong><p>Be the first. Post a skill or an item below.</p>' : '<strong>Nothing matches.</strong><p>Try another category or clear your search.</p>'}</div>`;
+    }
+  }
+  /* broken images fall back to an emoji tile */
+  $('#listingsGrid').addEventListener('error', e => {
+    const img = e.target;
+    if (img.tagName !== 'IMG') return;
+    const ph = document.createElement('div'); ph.className = 'ph'; ph.setAttribute('aria-hidden', 'true'); ph.textContent = img.dataset.emoji || '🎁';
+    img.replaceWith(ph);
+  }, true);
+
+  function unlock(code) {
+    const c = code.trim().toUpperCase();
+    const pod = allPods().find(p => p.code === c);
+    if (!pod) return false;
+    state.pod = pod.code; save(); renderAll();
+    return true;
+  }
+  $('#unlockForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const v = $('#codeInput').value;
+    if (!v.trim()) { $('#codeError').textContent = 'Enter the Circle Code from your Pod host.'; return; }
+    if (unlock(v)) { $('#codeError').textContent = ''; toast('Pod unlocked. Welcome to ' + getPod(state.pod).name + '.'); }
+    else $('#codeError').textContent = 'We don\'t know that code. Check it with your Pod host, or join below to get one.';
+  });
+  $('#demoCode').addEventListener('click', () => { $('#codeInput').value = 'KOTH-2026'; $('#unlockForm').requestSubmit(); });
+  $('#leavePod').addEventListener('click', () => { state.pod = null; state.filter = { cat: 'All', q: '', sort: 'new' }; save(); renderAll(); $('#codeInput').value = ''; });
+
+  $('#catChips').addEventListener('click', e => { const b = e.target.closest('[data-cat]'); if (!b) return; state.filter.cat = b.dataset.cat; renderListings(); });
+  $('#listingSearch').addEventListener('input', e => { state.filter.q = e.target.value; renderListings(); const s = $('#listingSearch'); s.focus(); });
+  $('#listingSort').addEventListener('change', e => { state.filter.sort = e.target.value; renderListings(); });
+
+  /* swap dialog */
+  const dlg = $('#swapDialog');
+  let swapTarget = null;
+  $('#listingsGrid').addEventListener('click', e => {
+    const s = e.target.closest('[data-swap]'), r = e.target.closest('[data-remove]');
+    if (s) {
+      swapTarget = SEED.concat(state.listings).find(l => l.id === s.dataset.swap);
+      if (!swapTarget) return;
+      $('#swapSub').textContent = swapTarget.title + ' · by ' + swapTarget.owner + ' · looking for: ' + swapTarget.wants;
+      $('#swapOffer').value = ''; $('#swapNote').value = ''; $('#swapErr').textContent = '';
+      if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+      $('#swapOffer').focus();
+    } else if (r) {
+      state.listings = state.listings.filter(l => l.id !== r.dataset.remove); save(); renderAll(); toast('Listing removed.', 'warn');
+    }
+  });
+  $('#swapCancel').addEventListener('click', () => dlg.close());
+  $('#swapForm').addEventListener('submit', e => {
+    e.preventDefault();
+    if (!$('#swapOffer').value.trim()) { $('#swapErr').textContent = 'Tell her what you can offer.'; $('#swapOffer').focus(); return; }
+    state.requests[swapTarget.id] = true; save(); dlg.close(); renderListings();
+    toast('Swap request sent to ' + swapTarget.owner + '.');
+  });
+
+  /* ---------- list form ---------- */
+  let photos = [];
+  function renderPreviews() { $('#previews').innerHTML = photos.map(p => `<img src="${p}" alt="Selected photo">`).join(''); }
+  function addFiles(files) {
+    const imgs = Array.from(files).filter(f => f.type.indexOf('image/') === 0);
+    imgs.slice(0, 3 - photos.length).forEach(f => {
+      if (f.size > 5 * 1024 * 1024) { toast(f.name + ' is over 5 MB. Choose a smaller image.', 'warn'); return; }
+      const r = new FileReader();
+      r.onload = () => { photos.push(r.result); renderPreviews(); };
+      r.readAsDataURL(f);
+    });
+    if (photos.length + imgs.length > 3) toast('Only the first 3 images are used.', 'warn');
+  }
+  $('#photoInput').addEventListener('change', e => { addFiles(e.target.files); e.target.value = ''; });
+  const ua = $('#uploadArea');
+  ua.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('#photoInput').click(); } });
+  ['dragenter', 'dragover'].forEach(ev => ua.addEventListener(ev, e => { e.preventDefault(); ua.classList.add('drag'); }));
+  ['dragleave', 'drop'].forEach(ev => ua.addEventListener(ev, e => { e.preventDefault(); ua.classList.remove('drag'); }));
+  ua.addEventListener('drop', e => addFiles(e.dataTransfer.files));
+
+  function setErr(input, msg) {
+    const g = input.closest('.form-group'); if (!g) return !msg;
+    g.classList.toggle('invalid', !!msg);
+    const p = $('.field-error', g); if (p) p.textContent = msg || '';
+    return !msg;
+  }
+  $('#listForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const t = $('#lTitle'), c = $('#lCat'), d = $('#lDesc'), w = $('#lWant'), p = $('#lPrice');
+    const ok = [
+      setErr(t, t.value.trim() ? '' : 'Give your listing a name.'),
+      setErr(c, c.value ? '' : 'Choose a category.'),
+      setErr(d, d.value.trim().length >= 10 ? '' : 'Tell us a little more (at least 10 characters).'),
+      setErr(w, w.value.trim() ? '' : 'Say what you would like in return.'),
+      setErr(p, p.value === '' || Number(p.value) >= 0 ? '' : 'Price cannot be negative.')
+    ].every(Boolean);
+    const err = $('#listError');
+    if (!ok) { err.textContent = 'Fix the highlighted fields and try again.'; return; }
+    if (!state.pod) {
+      err.innerHTML = 'Unlock a Pod first. <a href="#listings" class="link-btn">Enter your Circle Code</a> or <a href="#join" class="link-btn">join a Pod</a>.';
+      return;
+    }
+    err.textContent = '';
+    const cat = c.value;
+    state.listings.unshift({
+      id: uid(), pod: state.pod, title: t.value.trim(), cat, owner: state.member ? state.member.name.split(' ')[0] : 'You',
+      wants: w.value.trim(), price: p.value ? Number(p.value) : 0, desc: d.value.trim(),
+      emoji: cat === 'Skills & Services' ? '✨' : cat === 'Clothes & Accessories' ? '👗' : cat === 'Books & Media' ? '📚' : '🏠',
+      img: photos[0] || ''
+    });
+    save(); $('#listForm').reset(); photos = []; renderPreviews();
+    state.filter = { cat: 'All', q: '', sort: 'new' }; $('#listingSearch').value = ''; $('#listingSort').value = 'new';
+    renderAll(); renderStats();
+    toast('Published to ' + getPod(state.pod).name + '.');
+    goTo('listings');
+  });
+
+  /* ---------- join ---------- */
+  function validPhone(v) {
+    const d = v.replace(/[\s\-()]/g, '');
+    return /^\+\d{10,14}$/.test(d);
+  }
+  $('#joinForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const n = $('#jName'), pl = $('#jPlace'), ph = $('#jPhone');
+    const ok = [
+      setErr(n, n.value.trim().length >= 2 ? '' : 'Enter your name.'),
+      setErr(pl, pl.value.trim().length >= 3 ? '' : 'Enter your city and locality, e.g. Pune, Kothrud.'),
+      setErr(ph, validPhone(ph.value) ? '' : 'Use the country code, e.g. +91 98765 43210.')
+    ].every(Boolean);
+    if (!ok) return;
+
+    const { exact } = findPods(pl.value);
+    let pod = exact[0];
+    if (!pod) {
+      const parts = pl.value.split(',').map(s => s.trim()).filter(Boolean);
+      const locality = cap(parts.length > 1 ? parts.slice(1).join(' ') : parts[0]);
+      const city = parts.length > 1 ? cap(parts[0]) : '';
+      const letters = locality.replace(/[^A-Za-z]/g, '').toUpperCase();
+      let code;
+      do { code = (letters.slice(0, 4).padEnd(4, 'X')) + '-' + (1000 + Math.floor(Math.random() * 9000)); } while (allPods().some(p => p.code === code));
+      pod = { code, name: locality + ' Circle', city: city || 'Your city', locality, members: 1, meetups: 'Set by your Pod host', custom: true };
+      state.customPods.push(pod);
+    }
+    state.member = { name: cap(n.value), place: pl.value.trim(), phone: ph.value.replace(/\s+/g, ''), podCode: pod.code };
+    state.pod = pod.code; save();
+    renderAll(); renderStats(); renderPodChips();
+    toast('Welcome to SwapCircle, ' + state.member.name.split(' ')[0] + '!');
+  });
+  function renderJoin() {
+    const box = $('#joinBox');
+    if (!state.member) return;
+    const pod = getPod(state.member.podCode);
+    const founding = pod.custom && pod.members === 1;
+    box.innerHTML = `<div class="welcome">
+      <h3>You're in, ${esc(state.member.name.split(' ')[0])} 🎉</h3>
+      <p>Your Pod: <strong>${esc(pod.name)}</strong>${pod.city ? ' · ' + esc(pod.city) : ''}</p>
+      <div class="code" id="myCode">${esc(pod.code)}</div>
+      <p class="hint">${founding ? 'You are the founding member. Share this code with neighbours so they can join your Pod.' : 'Share this code only with women you trust in your neighbourhood.'}</p>
+      <div class="row"><button type="button" id="copyCode">Copy code</button><button type="button" class="btn-primary" id="goListings">Browse my Pod</button></div>
+      <p class="hint" style="margin-top:16px"><button type="button" class="link-btn" id="notMe">Not you? Join with a different name</button></p></div>`;
+  }
+  $('#joinBox').addEventListener('click', e => {
+    if (e.target.id === 'copyCode') {
+      const code = state.member.podCode;
+      (navigator.clipboard ? navigator.clipboard.writeText(code) : Promise.reject()).then(() => toast('Code copied.'), () => toast('Copy not available. Your code is ' + code + '.', 'warn'));
+    } else if (e.target.id === 'goListings') goTo('listings');
+    else if (e.target.id === 'notMe') { state.member = null; save(); location.reload(); }
+  });
+
+  /* ---------- Wealth Jar ---------- */
+  function jarMetrics() {
+    const es = state.jar.entries;
+    const total = es.reduce((s, x) => s + x.amount, 0);
+    let months = 1;
+    if (es.length) {
+      const first = Math.min.apply(null, es.map(x => x.date));
+      const a = new Date(first), b = new Date();
+      months = Math.max(1, (b.getFullYear() - a.getFullYear()) * 12 + (b.getMonth() - a.getMonth()) + 1);
+    }
+    const avg = total / months;
+    const r = state.jar.rate / 100 / 12, n = 120;
+    const growth = Math.pow(1 + r, n);
+    const proj = total * growth + avg * ((growth - 1) / r);
+    return { total, avg, proj };
+  }
+  function renderJar() {
+    $('#jarGoals').innerHTML = Object.keys(GOALS).map(k => `<button type="button" class="jar-goal" data-goal="${k}" aria-pressed="${state.jar.goal === k}">${GOALS[k].label}</button>`).join('');
+    const m = jarMetrics();
+    $('#jarTotal').textContent = inr(m.total);
+    $('#jarAvg').textContent = inr(m.avg);
+    $('#jarProj').textContent = inrShort(m.proj);
+    $('#jarRate').value = state.jar.rate;
+    $('#jarRateLabel').textContent = state.jar.rate + '%';
+
+    const es = state.jar.entries;
+    $('#jarList').innerHTML = es.slice().reverse().slice(0, 5).map(x => `<li><span>${GOALS[x.goal].label.split(' ')[0]} ${esc(x.note || 'Saved by swapping')}</span><span><strong>${inr(x.amount)}</strong> <button type="button" data-del="${x.id}" aria-label="Remove ${inr(x.amount)} entry">Remove</button></span></li>`).join('');
+
+    const card = $('#allocCard');
+    card.hidden = !es.length;
+    if (es.length) {
+      const by = {}; es.forEach(x => { by[x.goal] = (by[x.goal] || 0) + x.amount; });
+      $('#allocBar').innerHTML = Object.keys(by).map(k => `<span style="width:${(by[k] / m.total * 100).toFixed(1)}%;background:${GOALS[k].color}" title="${esc(GOALS[k].label)}"></span>`).join('');
+      $('#allocLegend').innerHTML = Object.keys(by).map(k => `<span><i style="background:${GOALS[k].color}"></i>${esc(GOALS[k].label)}: ${inr(by[k])}</span>`).join('');
+    }
+  }
+  $('#jarGoals').addEventListener('click', e => { const b = e.target.closest('[data-goal]'); if (!b) return; state.jar.goal = b.dataset.goal; save(); renderJar(); });
+  $('#jarForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const a = Number($('#jarAmount').value), note = $('#jarNote').value.trim();
+    if (!(a > 0)) { $('#jarError').textContent = 'Enter the amount you saved, in rupees.'; $('#jarAmount').focus(); return; }
+    $('#jarError').textContent = '';
+    state.jar.entries.push({ id: uid(), amount: Math.round(a), note, goal: state.jar.goal, date: Date.now() });
+    save(); $('#jarAmount').value = ''; $('#jarNote').value = ''; renderJar();
+    toast(inr(a) + ' added to ' + GOALS[state.jar.goal].label.replace(/^\S+\s/, '') + '.');
+  });
+  $('#jarList').addEventListener('click', e => { const b = e.target.closest('[data-del]'); if (!b) return; state.jar.entries = state.jar.entries.filter(x => x.id !== b.dataset.del); save(); renderJar(); });
+  $('#jarRate').addEventListener('input', e => { state.jar.rate = Number(e.target.value); save(); renderJar(); });
+  $('#resetJar').addEventListener('click', () => { if (!state.jar.entries.length) return; state.jar.entries = []; save(); renderJar(); toast('Jar cleared.', 'warn'); });
+
+  /* ---------- premium interest ---------- */
+  function renderInterest() {
+    $$('.notify-btn').forEach(b => {
+      const on = !!state.interest[b.dataset.interest];
+      b.setAttribute('aria-pressed', on);
+      b.textContent = on ? '✓ You\'re on the list' : 'Keep me posted';
+    });
+  }
+  $$('.notify-btn').forEach(b => b.addEventListener('click', () => {
+    const k = b.dataset.interest;
+    state.interest[k] = !state.interest[k]; save(); renderInterest();
+    toast(state.interest[k] ? 'Noted. We\'ll tell you when this opens.' : 'Removed from the list.', state.interest[k] ? 'ok' : 'warn');
+  }));
+
+  /* ---------- reset ---------- */
+  $('#resetAll').addEventListener('click', () => {
+    if (!confirm('Clear everything saved in this browser (membership, listings, Jar)?')) return;
+    store.removeItem(KEY); location.reload();
+  });
+
+  /* ---------- boot ---------- */
+  function renderAll() { renderChip(); renderListings(); renderJoin(); renderJar(); renderInterest(); }
+  renderPodChips(); renderAll(); renderStats();
+})();
+</script>
+</body>
+</html>
